@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <iostream>
 #include <algorithm>
+#include <queue>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
@@ -136,6 +137,40 @@ namespace Dialogue {
 			return Speakers;
 		}
 
+		// Breadth First Search
+		void PrintGraph() const {
+			const DialogueNode* Current = GetRoot();
+			if (!Current) return;
+
+			std::unordered_set<int> Visited;
+			std::queue<const DialogueNode*> Queue;
+			Queue.push(Current);
+
+			while (!Queue.empty()) {
+				Current = Queue.front();
+				Queue.pop();
+
+				if (Visited.contains(Current->Id)) {
+					continue;
+				}
+
+				Visited.insert(Current->Id);
+
+				std::cout << GetSpeakerName(Current->Id) << ": "
+						  << Current->Text << "\n";
+
+				for (int NextId : GetEdges(Current->Id)) {
+					std::cout << " -> " << GetSpeakerName(NextId) << "\n";
+
+					const DialogueNode* Next = GetNode(NextId);
+					if (Next && !Visited.contains(NextId)) {
+						Queue.push(Next);
+					}
+				}
+				std::cout << "\n";
+			}
+		}
+		/*
 		void PrintGraph() const
 		{
 			for (const auto& [nodeId, node] : Nodes)
@@ -158,6 +193,7 @@ namespace Dialogue {
 				std::cout << "\n";
 			}
 		}
+		*/
 	};
 	
 }
