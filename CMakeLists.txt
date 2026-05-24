@@ -2,11 +2,22 @@
 
 project("DialogueSystem")
 
+include(FetchContent)
+
+FetchContent_Declare(
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG v3.11.3
+)
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(nlohmann_json)
+
 # Executable
 add_executable(DialogueSystem
     "main.cpp"
     "DialogueGraph.h"
  "DialogueParser.h")
+target_link_libraries(DialogueSystem PRIVATE nlohmann_json::nlohmann_json)
 
 # C++ standard
 set_property(TARGET DialogueSystem PROPERTY CXX_STANDARD 20)
@@ -19,4 +30,5 @@ if (POLICY CMP0141)
         "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,\
             $<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,\
             $<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+
 endif()
