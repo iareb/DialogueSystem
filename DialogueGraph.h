@@ -1,5 +1,7 @@
 ﻿#pragma once
+#include <cstdint>
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
@@ -12,6 +14,7 @@ namespace Dialogue {
 	};
 
 	enum class EmotionTypes {
+		INVALID,
 		Normal,
 		Happy,
 		Sad,
@@ -35,8 +38,9 @@ namespace Dialogue {
 	
 		/// Short int for efficiency - the game is small and we'll never have more than 
 		/// 255 different entities who participate in dialogues.
-		EntityId Speaker = 0;
-		EntityId Listener = 1;
+		static constexpr EntityId InvalidEntity = 255;
+		EntityId Speaker = InvalidEntity;
+		EntityId Listener = InvalidEntity;
 	
 		std::string Text;
 		// std::string Condition;
@@ -54,16 +58,17 @@ namespace Dialogue {
 	private:
 		std::unordered_map<int, DialogueNode> Nodes;
 		std::unordered_map<int, std::vector<int>> Edges;
-
 		int RootNodeId = -1;
-		bool Started = false;
-		bool Ended = false;
 
 	public:
 		DialogueGraph() = default;
 
-		DialogueGraph(std::unordered_map<int, DialogueNode> Nodes, std::unordered_map<int, std::vector<int>> Edges) 
-		: Nodes(std::move(Nodes)), Edges(std::move(Edges))
+		DialogueGraph(
+			std::unordered_map<int, DialogueNode> Nodes,
+			std::unordered_map<int, std::vector<int>> Edges,
+			int RootNodeId
+		)
+		: Nodes(std::move(Nodes)), Edges(std::move(Edges)), RootNodeId(RootNodeId)
 		{}
 
 		const DialogueNode* GetRoot() const {
@@ -117,7 +122,7 @@ namespace Dialogue {
 			return ToString(static_cast<EntityNames>(Node->Speaker));
 		}
 
-		std::string_view GetListenerName(int NodeId) {
+		std::string_view GetListenerName(int NodeId) const {
 			const DialogueNode* Node = GetNode(NodeId);
 			return ToString(static_cast<EntityNames>(Node->Listener));
 		}
@@ -129,14 +134,6 @@ namespace Dialogue {
 			}
 
 			return Speakers;
-		}
-
-		bool HasStarted() const {
-			return Started;
-		}
-
-		bool HasEnded() const {
-			return Ended;
 		}
 
 		void PrintGraph() const

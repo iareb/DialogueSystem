@@ -1,0 +1,32 @@
+{
+    "dialogue_id": 0,
+    "root_node_id": 0,
+    "nodes": [
+        {
+            "id": 0,
+            "speaker": 0,
+            "listener": 1,
+            "text": "Hello everybody!",
+            "emotion": "happy",
+            "triggers_quest": false,
+            "starts_combat": false,
+            "ends_dialogue": false,
+            "moral_weight": 0
+        },
+        {
+            "id": 1,
+            "speaker": 1,
+            "listener": 0,
+            "text": "Please don't bother me.",
+            "emotion": "angry",
+            "triggers_quest": false,
+            "starts_combat": false,
+            "ends_dialogue": false,
+            "moral_weight": 0
+        }
+    ],
+    "edges": [
+        { "from": 0, "to": 1 },
+        { "from": 1, "to": 0 }
+    ]
+}

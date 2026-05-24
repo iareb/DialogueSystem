@@ -1,7 +1,9 @@
 ﻿#include "DialogueGraph.h"
+#include "DialogueParser.h"
 
 int main()
 {
+	/*
 	Dialogue::DialogueNode FirstNode{
 		.Id = 0,
 		.Speaker = 0,
@@ -16,8 +18,10 @@ int main()
 		.Text = "Fuck you!",
 		.EmotionType = Dialogue::EmotionTypes::Angry,
 	};
+	*/
 
-	Dialogue::DialogueGraph Graph;
+	Dialogue::DialogueGraph Graph = Dialogue::DialogueParser("files/first.json").BuildGraph();
+	/*
 	Graph.AddNode(FirstNode);
 	Graph.AddNode(SecondNode);
 	Graph.AddEdge(FirstNode.Id, SecondNode.Id);
@@ -25,6 +29,7 @@ int main()
 	auto NextNodes = Graph.GetEdges(FirstNode.Id);
 
 	Graph.AddEdge(SecondNode.Id, FirstNode.Id);
+	*/
 
 	Graph.PrintGraph();
 

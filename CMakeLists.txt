@@ -32,3 +32,14 @@ if (POLICY CMP0141)
             $<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 
 endif()
+
+file(GLOB DIALOGUE_FILES "${CMAKE_SOURCE_DIR}/files/*.json")
+
+foreach(FILE ${DIALOGUE_FILES})
+    get_filename_component(FILENAME ${FILE} NAME)
+    configure_file(
+            ${FILE}
+            ${CMAKE_BINARY_DIR}/files/${FILENAME}
+            COPYONLY
+    )
+endforeach()
